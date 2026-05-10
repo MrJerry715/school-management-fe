@@ -1,0 +1,36 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Teachers Dashboard</h1>
+      <p class="text-gray-500 mt-1">Manage teacher assignments, subjects, and communication details.</p>
+    </div>
+    <button class="px-5 py-3 rounded-full bg-[#1F4C73] text-white font-medium hover:bg-[#163f60] transition">
+      Add Teacher
+    </button>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-4 mb-8">
+    <div *ngFor="let item of summary" class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm text-gray-500 uppercase tracking-[0.12em]">{{ item.label }}</p>
+      <p class="text-3xl font-semibold text-gray-900 mt-4">{{ item.value }}</p>
+    </div>
+  </div>
+
+  <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-xl font-semibold text-gray-900">Teacher Contacts</h2>
+        <p class="text-sm text-gray-500">Quick access to the teaching team.</p>
+      </div>
+      <button class="text-sm text-[#1F4C73] font-medium hover:underline">Export contacts</button>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-2">
+      <div *ngFor="let teacher of teacherList" class="rounded-3xl border border-gray-200 p-5 hover:shadow-sm transition bg-slate-50">
+        <p class="text-lg font-semibold text-gray-900">{{ teacher.name }}</p>
+        <p class="text-sm text-gray-600 mt-1">{{ teacher.subject }}</p>
+        <p class="text-sm text-gray-500 mt-2">{{ teacher.contact }}</p>
+      </div>
+    </div>
+  </div>
+</div>

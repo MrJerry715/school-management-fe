@@ -1,0 +1,45 @@
+<div class="p-6 bg-gray-100 min-h-screen">
+  <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Class Management</h1>
+      <p class="text-gray-500 mt-1">Organize class schedules, room assignments, and teacher responsibility.</p>
+    </div>
+    <button class="px-5 py-3 rounded-full bg-[#1F4C73] text-white font-medium hover:bg-[#163f60] transition">
+      Add New Class
+    </button>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-4 mb-8">
+    <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm text-gray-500 uppercase tracking-[0.12em]">Classrooms</p>
+      <p class="text-3xl font-semibold text-gray-900 mt-4">24</p>
+    </div>
+    <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm text-gray-500 uppercase tracking-[0.12em]">Active Grades</p>
+      <p class="text-3xl font-semibold text-gray-900 mt-4">10</p>
+    </div>
+    <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm text-gray-500 uppercase tracking-[0.12em]">Total Sections</p>
+      <p class="text-3xl font-semibold text-gray-900 mt-4">18</p>
+    </div>
+    <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm text-gray-500 uppercase tracking-[0.12em]">Teacher Assignments</p>
+      <p class="text-3xl font-semibold text-gray-900 mt-4">54</p>
+    </div>
+  </div>
+
+  <div class="rounded-3xl bg-white p-6 shadow-sm border border-slate-200">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Class List</h2>
+    <div class="space-y-4">
+      <div *ngFor="let classItem of classList" class="rounded-3xl border border-gray-200 p-5 hover:shadow-sm transition bg-slate-50">
+        <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p class="text-lg font-semibold text-gray-900">{{ classItem.grade }} — Section {{ classItem.section }}</p>
+            <p class="text-sm text-gray-600">Teacher: {{ classItem.teacher }} • Room {{ classItem.room }}</p>
+          </div>
+          <div class="text-sm text-gray-500">Students: {{ classItem.students }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

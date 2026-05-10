@@ -1,0 +1,31 @@
+<div class="min-h-screen bg-gradient-to-br from-[#eef3f9] via-[#f5f8fc] to-[#e8f0f8] flex flex-col items-center justify-center px-4 py-12">
+  <div class="w-full max-w-2xl">
+    <div class="text-center mb-12">
+      <p class="text-sm uppercase tracking-[0.3em] text-slate-500">Welcome to</p>
+      <h1 class="mt-4 text-5xl font-bold text-[#014367]">School Management</h1>
+      <p class="mt-4 text-lg text-gray-600">Select your role to continue</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-3">
+      <button
+        *ngFor="let role of roles"
+        (click)="selectRole(role.id)"
+        [ngClass]="role.color"
+        class="rounded-3xl border-2 p-8 transition hover:shadow-lg hover:scale-105 text-center cursor-pointer"
+      >
+        <div class="text-6xl mb-4">{{ role.icon }}</div>
+        <h2 class="text-2xl font-bold text-gray-900 mb-2">{{ role.title }}</h2>
+        <p class="text-sm text-gray-600">{{ role.description }}</p>
+      </button>
+    </div>
+
+    <div class="mt-12 rounded-3xl bg-white p-8 shadow-sm border border-slate-200">
+      <p class="text-center text-sm text-gray-500">
+        <strong>Demo Credentials:</strong><br />
+        Admin: admin / password<br />
+        Teacher: teacher@school.com / password<br />
+        Parent: parent@email.com / password
+      </p>
+    </div>
+  </div>
+</div>
