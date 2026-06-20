@@ -1,0 +1,260 @@
+<div class="p-6 bg-slate-100 min-h-screen">
+  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Administration</p>
+        <h1 class="text-3xl font-semibold text-slate-900">User Management</h1>
+        <p class="mt-2 text-sm text-slate-500">Manage roles, permissions, and user assignments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Cards -->
+  <div class="grid gap-4 md:grid-cols-3 mb-8">
+    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Active Teachers</p>
+      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ activeTeachersCount }}</p>
+    </div>
+    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Inactive Teachers</p>
+      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ inactiveTeachersCount }}</p>
+    </div>
+    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
+      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Parent Mappings</p>
+      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ parentChildMappings.length }}</p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <mat-tab-group [(selectedIndex)]="activeTab" class="rounded-[2rem] overflow-hidden">
+    <!-- Role Permissions Tab -->
+    <mat-tab label="Role Permissions">
+      <div class="p-6">
+        <h2 class="text-xl font-semibold text-slate-900 mb-6">Role & Permission Settings</h2>
+        <div class="overflow-x-auto">
+          <table class="permission-table">
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Description</th>
+                <th>Permissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let role of rolePermissions">
+                <td class="font-semibold text-slate-900">
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-700">
+                    {{ role.role | uppercase }}
+                  </span>
+                </td>
+                <td class="text-slate-600">{{ role.description }}</td>
+                <td>
+                  <div class="flex flex-wrap gap-2">
+                    <span *ngFor="let perm of role.permissions" class="inline-flex items-center rounded-full px-2 py-1 text-xs bg-slate-100 text-slate-700">
+                      {{ perm }}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Teachers Tab -->
+    <mat-tab label="Teacher Assignments">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold text-slate-900">Teacher Class & Subject Assignments</h2>
+          <button mat-raised-button color="primary">
+            <mat-icon>add</mat-icon>
+            <span class="ml-2">Add Teacher</span>
+          </button>
+        </div>
+
+        <!-- Edit Form -->
+        <div *ngIf="editingTeacher" class="bg-slate-50 p-6 rounded-[1.75rem] border border-slate-200 mb-6">
+          <h3 class="text-lg font-semibold mb-4">Edit Teacher Assignment</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Teacher</label>
+              <input
+                type="text"
+                [(ngModel)]="editingTeacher.teacherName"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
+                disabled
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Status</label>
+              <select [(ngModel)]="editingTeacher.status" class="w-full px-4 py-2 border border-slate-300 rounded-lg">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Classes</label>
+           <select
+    [(ngModel)]="editingTeacher.classIds"
+    multiple
+    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
+
+    <option
+        *ngFor="let cls of availableClasses"
+        [ngValue]="cls">
+        {{ cls }}
+    </option>
+
+</select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Subjects</label>
+             <select
+    [(ngModel)]="editingTeacher.subjects"
+    multiple
+    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
+
+    <option
+        *ngFor="let subj of availableSubjects"
+        [ngValue]="subj">
+        {{ subj }}
+    </option>
+
+</select>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button (click)="saveTeacher()" mat-raised-button color="primary">Save</button>
+            <button (click)="cancelEditTeacher()" mat-stroked-button>Cancel</button>
+          </div>
+        </div>
+
+        <!-- Teachers Table -->
+        <div class="overflow-x-auto">
+          <table class="permission-table">
+            <thead>
+              <tr>
+                <th>Teacher Name</th>
+                <th>Status</th>
+                <th>Assigned Classes</th>
+                <th>Subjects</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let teacher of teachers">
+                <td class="font-semibold text-slate-900">{{ teacher.teacherName }}</td>
+                <td>
+                  <span [ngClass]="teacher.status === 'active' ? 'status-active' : 'status-inactive'">
+                    {{ teacher.status | uppercase }}
+                  </span>
+                </td>
+                <td class="text-slate-600">{{ getClassNames(teacher.classIds) }}</td>
+                <td>{{ teacher.subjects.join(', ') }}</td>
+                <td class="text-slate-600">{{ teacher.email }}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <button (click)="editTeacher(teacher)" mat-icon-button title="Edit">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button (click)="toggleTeacherStatus(teacher)" mat-icon-button title="Toggle Status">
+                      <mat-icon>{{ teacher.status === 'active' ? 'block' : 'check_circle' }}</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Parents Tab -->
+    <mat-tab label="Parent-Child Mapping">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold text-slate-900">Parent & Child Relationships</h2>
+          <button mat-raised-button color="primary">
+            <mat-icon>add</mat-icon>
+            <span class="ml-2">Add Parent</span>
+          </button>
+        </div>
+
+        <!-- Edit Form -->
+        <div *ngIf="editingParent" class="bg-slate-50 p-6 rounded-[1.75rem] border border-slate-200 mb-6">
+          <h3 class="text-lg font-semibold mb-4">Edit Parent Mapping</h3>
+          <div class="grid gap-4 md:grid-cols-2">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Parent Name</label>
+              <input
+                type="text"
+                [(ngModel)]="editingParent.parentName"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 mb-2">Email</label>
+              <input
+                type="email"
+                [(ngModel)]="editingParent.email"
+                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
+              />
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Children</label>
+             <select
+    [(ngModel)]="editingParent.childrenIds"
+    multiple
+    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
+
+    <option
+        *ngFor="let student of availableStudents"
+        [ngValue]="student.id">
+        {{ student.name }}
+    </option>
+
+</select>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-4">
+            <button (click)="saveParent()" mat-raised-button color="primary">Save</button>
+            <button (click)="cancelEditParent()" mat-stroked-button>Cancel</button>
+          </div>
+        </div>
+
+        <!-- Parents Table -->
+        <div class="overflow-x-auto">
+          <table class="permission-table">
+            <thead>
+              <tr>
+                <th>Parent Name</th>
+                <th>Children</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let parent of parentChildMappings">
+                <td class="font-semibold text-slate-900">{{ parent.parentName }}</td>
+                <td class="text-slate-600">{{ getChildrenNames(parent.childrenIds) }}</td>
+                <td class="text-slate-600">{{ parent.email }}</td>
+                <td>
+                  <div class="flex gap-2">
+                    <button (click)="editParent(parent)" mat-icon-button title="Edit">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button title="Delete">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
