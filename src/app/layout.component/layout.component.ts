@@ -4,22 +4,25 @@ import { CommonModule } from '@angular/common';
 import {
   Router,
   NavigationEnd,
-  RouterModule,
   RouterLink,
+  RouterLinkActive,
+  RouterModule,
   RouterOutlet,
   ActivatedRoute,
 } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { filter } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, MatIconModule, CommonModule, RouterModule, NgIf],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, MatIconModule, CommonModule, RouterModule, NgIf],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
   private readonly router = inject(Router);
+  private readonly auth = inject(AuthService);
   private readonly activatedRoute = inject(ActivatedRoute);
 
   sidebarOpen = true;
@@ -27,9 +30,10 @@ export class LayoutComponent {
   isDesktop = window.innerWidth >= 768;
   headerTitle = 'School Management';
   breadcrumbs: { label: string; url: string }[] = [];
-  userName = 'Admin User';
+  userName = this.auth.currentUser?.username ?? 'School User';
 
   logout() {
+    this.auth.logout();
     this.router.navigate(['/login']);
   }
 

@@ -1,29 +1,201 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component/layout.component';
+import { AuthGuard } from './auth/auth.guard';
+import { roleGuard } from './auth/role.guard';
 
 export const routes: Routes = [
+  // Authentication routes
   {
     path: 'login',
     loadChildren: () =>
       import('../pages/login.component/login.routes').then((m) => m.authRoutes),
   },
+
+  // Unauthorized page
   {
-    path: 'teacher-dashboard',
+    path: 'unauthorized',
     loadComponent: () =>
-      import('../pages/teacher.component/teacher-dashboard.component').then(
-        (m) => m.TeacherDashboardComponent
+      import('../pages/unauthorized.component').then(
+        (m) => m.UnauthorizedComponent
       ),
   },
+
+  // Admin Routes
   {
-    path: 'parent-dashboard',
-    loadComponent: () =>
-      import('../pages/parent.component/parent-dashboard.component').then(
-        (m) => m.ParentDashboardComponent
-      ),
+    path: 'admin',
+    canActivate: [AuthGuard, roleGuard(['admin'])],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../pages/admin.component/admin-dashboard.component').then(
+            (m) => m.AdminDashboardComponent
+          ),
+      },
+      {
+        path: 'users',
+        loadComponent: () =>
+          import('../pages/user-management.component/user-management.component').then(
+            (m) => m.UserManagementComponent
+          ),
+      },
+      {
+        path: 'students',
+        loadComponent: () =>
+          import('../pages/students.component/students.component').then(
+            (m) => m.StudentsComponent
+          ),
+      },
+      {
+        path: 'attendance',
+        loadComponent: () =>
+          import('../pages/attendance.component/attendance.component').then(
+            (m) => m.AttendanceComponent
+          ),
+      },
+      {
+        path: 'test-results',
+        loadComponent: () =>
+          import('../pages/test-results.component/test-results.component').then(
+            (m) => m.TestResultsComponent
+          ),
+      },
+      {
+        path: 'fees',
+        loadComponent: () =>
+          import('../pages/fees.component/fees.component').then(
+            (m) => m.FeesComponent
+          ),
+      },
+      {
+        path: 'reports',
+        loadComponent: () =>
+          import('../pages/reports.component/reports.component').then(
+            (m) => m.ReportsComponent
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
+
+  // Teacher Routes
+  {
+    path: 'teacher',
+    canActivate: [AuthGuard, roleGuard(['teacher'])],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../pages/teacher.component/teacher-dashboard.component').then(
+            (m) => m.TeacherDashboardComponent
+          ),
+      },
+      {
+        path: 'students',
+        loadComponent: () =>
+          import('../pages/students.component/students.component').then(
+            (m) => m.StudentsComponent
+          ),
+      },
+      {
+        path: 'attendance',
+        loadComponent: () =>
+          import('../pages/attendance.component/attendance.component').then(
+            (m) => m.AttendanceComponent
+          ),
+      },
+      {
+        path: 'test-results',
+        loadComponent: () =>
+          import('../pages/test-results.component/test-results.component').then(
+            (m) => m.TestResultsComponent
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
+  },
+
+  // Parent Routes
+  {
+    path: 'parent',
+    canActivate: [AuthGuard, roleGuard(['parent'])],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../pages/parent.component/parent-dashboard.component').then(
+            (m) => m.ParentDashboardComponent
+          ),
+      },
+      {
+        path: 'fees',
+        loadComponent: () =>
+          import('../pages/fees.component/fees.component').then(
+            (m) => m.FeesComponent
+          ),
+      },
+      {
+        path: 'attendance',
+        loadComponent: () =>
+          import('../pages/attendance.component/attendance.component').then(
+            (m) => m.AttendanceComponent
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
+  },
+
+  // Student Routes
+  {
+    path: 'student',
+    canActivate: [AuthGuard, roleGuard(['student'])],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('../pages/student.component/student-dashboard.component').then(
+            (m) => m.StudentDashboardComponent
+          ),
+      },
+      {
+        path: 'attendance',
+        loadComponent: () =>
+          import('../pages/attendance.component/attendance.component').then(
+            (m) => m.AttendanceComponent
+          ),
+      },
+      {
+        path: 'fees',
+        loadComponent: () =>
+          import('../pages/fees.component/fees.component').then(
+            (m) => m.FeesComponent
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
+  },
+
+  // Layout-based routes (shared for all authenticated users)
   {
     path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard, roleGuard(['admin', 'teacher', 'parent', 'student'])],
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       {
@@ -96,9 +268,12 @@ export const routes: Routes = [
           import('../pages/user-management.component/user-management.component').then(
             (m) => m.UserManagementComponent
           ),
+        canActivate: [roleGuard(['admin'])],
         data: { breadcrumb: 'User Management' },
       },
     ],
   },
+
+  // Catch-all
   { path: '**', redirectTo: '' },
 ];
