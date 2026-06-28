@@ -31,23 +31,7 @@ import { RoleManagementService, RolePermission, TeacherAssignment, ParentChildMa
     MatChipsModule,
   ],
   templateUrl: './user-management.component.html',
-  styles: [`
-    .permission-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .permission-table th, .permission-table td {
-      padding: 12px;
-      border-bottom: 1px solid #e0e0e0;
-      text-align: left;
-    }
-    .permission-table th {
-      background-color: #f5f5f5;
-      font-weight: 600;
-    }
-    .status-active { color: #4caf50; font-weight: 600; }
-    .status-inactive { color: #f44336; font-weight: 600; }
-  `],
+  styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
   private roleService = inject(RoleManagementService);
@@ -73,7 +57,7 @@ export class UserManagementComponent implements OnInit {
   selectedParent: ParentChildMapping | null = null;
   editingParent: ParentChildMapping | null = null;
   availableStudents = [
-    { id: 's1', name: 'Ali Hassan' },
+    { id: 's1', name: 'Malik' },
     { id: 's2', name: 'Zainab Hassan' },
     { id: 's3', name: 'Sara Khan' },
     { id: 's4', name: 'Omar Ahmed' },
@@ -172,14 +156,8 @@ export class UserManagementComponent implements OnInit {
   }
 
   cards = [
-    {
-      title: 'Students',
-    },
-    {
-      title: 'Teachers',
-    },
-    {
-      title: 'Staff',
-    },
+    { title: 'Students' },
+    { title: 'Teachers' },
+    { title: 'Staff' },
   ];
 }

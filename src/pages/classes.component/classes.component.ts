@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { AddEditClassDialogComponent } from '../dialogs/add-edit-class-dialog/add-edit-class-dialog.component';
+import { AdmissionFormComponent } from '../../admission-form.component/admission-form.component';
+
 interface SchoolClass {
   id: number;
   grade: string;
@@ -14,26 +17,35 @@ interface SchoolClass {
 @Component({
   selector: 'app-classes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AddEditClassDialogComponent,
+    AdmissionFormComponent
+  ],
   templateUrl: './classes.component.html',
 })
 export class ClassesComponent {
+
   searchQuery = '';
   selectedGrade = '';
   selectedTeacher = '';
 
   showClassDialog = false;
+  showAdmissionDialog = false;
+
   classDialogMode: 'add' | 'edit' = 'add';
 
   editingClass: SchoolClass | null = null;
+  selectedClass: SchoolClass | null = null;
 
-  classForm: Omit<SchoolClass, 'id'> & { id: number | null } = {
-    id: null,
+  classForm = {
+    id: null as number | null,
     grade: '',
     section: '',
     teacher: '',
     room: '',
-    students: 0,
+    students: 0
   };
 
   classList: SchoolClass[] = [
@@ -43,7 +55,7 @@ export class ClassesComponent {
       section: 'A',
       teacher: 'Ms. Maria',
       room: 'A1',
-      students: 32,
+      students: 32
     },
     {
       id: 2,
@@ -51,143 +63,116 @@ export class ClassesComponent {
       section: 'B',
       teacher: 'Mr. Ali',
       room: 'B1',
-      students: 30,
-    },
-    {
-      id: 3,
-      grade: '8th Grade',
-      section: 'C',
-      teacher: 'Mrs. Sara',
-      room: 'C2',
-      students: 28,
-    },
-    {
-      id: 4,
-      grade: '10th Grade',
-      section: 'A',
-      teacher: 'Mr. Shah',
-      room: 'D1',
-      students: 26,
-    },
+      students: 30
+    }
   ];
 
-  get grades(): string[] {
-    return [...new Set(this.classList.map((item) => item.grade))].sort();
+  get grades() {
+    return [...new Set(this.classList.map(x => x.grade))];
   }
 
-  get teachers(): string[] {
-    return [...new Set(this.classList.map((item) => item.teacher))].sort();
+  get teachers() {
+    return [...new Set(this.classList.map(x => x.teacher))];
   }
 
-  get filteredClasses(): SchoolClass[] {
-    return this.classList.filter((item) => {
-      const matchesQuery = this.searchQuery
-        ? item.grade.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.section.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.teacher.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          item.room.toLowerCase().includes(this.searchQuery.toLowerCase())
-        : true;
+  get filteredClasses() {
+    return this.classList.filter(item => {
 
-      const matchesGrade = this.selectedGrade
-        ? item.grade === this.selectedGrade
-        : true;
+      const search =
+        !this.searchQuery ||
+        item.grade.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        item.section.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        item.teacher.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        item.room.toLowerCase().includes(this.searchQuery.toLowerCase());
 
-      const matchesTeacher = this.selectedTeacher
-        ? item.teacher === this.selectedTeacher
-        : true;
+      const grade =
+        !this.selectedGrade ||
+        item.grade === this.selectedGrade;
 
-      return matchesQuery && matchesGrade && matchesTeacher;
+      const teacher =
+        !this.selectedTeacher ||
+        item.teacher === this.selectedTeacher;
+
+      return search && grade && teacher;
     });
   }
 
-  resetClassFilters(): void {
-    this.searchQuery = '';
-    this.selectedGrade = '';
-    this.selectedTeacher = '';
-  }
+  addNewClass() {
 
-  addNewClass(): void {
     this.classDialogMode = 'add';
-    this.editingClass = null;
-    this.resetClassForm();
-    this.showClassDialog = true;
-  }
 
-  openEditClassDialog(classItem: SchoolClass): void {
-    this.classDialogMode = 'edit';
-    this.editingClass = classItem;
-    this.classForm = { ...classItem };
-    this.showClassDialog = true;
-  }
-
-  closeClassDialog(): void {
-    this.showClassDialog = false;
-    this.resetClassForm();
-  }
-
-  resetClassForm(): void {
     this.classForm = {
       id: null,
       grade: '',
       section: '',
       teacher: '',
       room: '',
-      students: 0,
+      students: 0
     };
+
+    this.showClassDialog = true;
   }
 
-  saveClass(): void {
-    if (
-      !this.classForm.grade ||
-      !this.classForm.section ||
-      !this.classForm.teacher ||
-      !this.classForm.room
-    ) {
-      window.alert('Please complete all required class fields.');
-      return;
-    }
+  openEditClassDialog(item: SchoolClass) {
+
+    this.classDialogMode = 'edit';
+
+    this.classForm = { ...item };
+
+    this.showClassDialog = true;
+  }
+
+  closeClassDialog() {
+    this.showClassDialog = false;
+  }
+
+  saveClass(data: any) {
 
     if (this.classDialogMode === 'add') {
-      const nextId =
-        Math.max(...this.classList.map((item) => item.id), 0) + 1;
 
-      const newClass: SchoolClass = {
-        id: nextId,
-        grade: this.classForm.grade,
-        section: this.classForm.section,
-        teacher: this.classForm.teacher,
-        room: this.classForm.room,
-        students: this.classForm.students,
-      };
+      const id = Math.max(...this.classList.map(x => x.id), 0) + 1;
 
-      this.classList = [...this.classList, newClass];
-    } else if (this.editingClass) {
-      this.classList = this.classList.map((item) =>
-        item.id === this.editingClass!.id
-          ? {
-              id: item.id,
-              grade: this.classForm.grade,
-              section: this.classForm.section,
-              teacher: this.classForm.teacher,
-              room: this.classForm.room,
-              students: this.classForm.students,
-            }
-          : item
+      this.classList.push({
+        id,
+        ...data
+      });
+
+    } else {
+
+      this.classList = this.classList.map(item =>
+        item.id === data.id ? data : item
       );
     }
 
     this.closeClassDialog();
   }
 
-  deleteClass(classItem: SchoolClass): void {
-    const confirmed = window.confirm(
-      `Delete ${classItem.grade} Section ${classItem.section}?`
-    );
+  deleteClass(item: SchoolClass) {
 
-    if (confirmed) {
-      this.classList = this.classList.filter(
-        (item) => item.id !== classItem.id
-      );
+    if (confirm('Delete this class?')) {
+
+      this.classList = this.classList.filter(x => x.id !== item.id);
+
     }
   }
-} 
+
+  resetClassFilters() {
+    this.searchQuery = '';
+    this.selectedGrade = '';
+    this.selectedTeacher = '';
+  }
+
+  openAdmissionForm(classItem: SchoolClass) {
+    this.selectedClass = classItem;
+    this.showAdmissionDialog = true;
+  }
+
+  closeAdmissionForm() {
+    this.showAdmissionDialog = false;
+  }
+
+  viewStudents(classItem: SchoolClass) {
+    console.log(classItem);
+  }
+
+}

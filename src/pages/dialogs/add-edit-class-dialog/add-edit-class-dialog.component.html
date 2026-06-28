@@ -1,0 +1,108 @@
+<div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+  <div class="bg-white rounded-[32px] w-full max-w-2xl shadow-xl overflow-hidden">
+
+    <!-- Header -->
+    <div class="px-8 pt-8 pb-6 border-b border-slate-200">
+
+      <h2 class="text-3xl font-semibold text-slate-900">
+        {{ mode=='add' ? 'Add New Class' : 'Edit Class' }}
+      </h2>
+
+      <p class="text-slate-500 mt-2">
+        Fill all class information.
+      </p>
+
+    </div>
+
+    <!-- Form -->
+    <div class="p-8">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Grade -->
+        <div>
+          <label class="block mb-2 text-sm font-medium text-slate-700">
+            Grade <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            [(ngModel)]="form.grade"
+            class="w-full h-14 rounded-2xl border border-slate-300 px-5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+        </div>
+
+        <!-- Section -->
+        <div>
+          <label class="block mb-2 text-sm font-medium text-slate-700">
+            Section <span class="text-red-500">*</span>
+          </label>
+
+          <input
+            [(ngModel)]="form.section"
+            class="w-full h-14 rounded-2xl border border-slate-300 px-5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+        </div>
+
+        <!-- Teacher -->
+        <div>
+          <label class="block mb-2 text-sm font-medium text-slate-700">
+            Teacher
+          </label>
+
+          <input
+            [(ngModel)]="form.teacher"
+            class="w-full h-14 rounded-2xl border border-slate-300 px-5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+        </div>
+
+        <!-- Room -->
+        <div>
+          <label class="block mb-2 text-sm font-medium text-slate-700">
+            Room
+          </label>
+
+          <input
+            [(ngModel)]="form.room"
+            class="w-full h-14 rounded-2xl border border-slate-300 px-5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+        </div>
+
+        <!-- Students -->
+        <div class="md:col-span-2">
+
+          <label class="block mb-2 text-sm font-medium text-slate-700">
+            Total Students
+          </label>
+
+          <input
+            type="number"
+            [(ngModel)]="form.students"
+            class="w-full h-14 rounded-2xl border border-slate-300 px-5 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-slate-200 px-8 py-6 flex justify-between">
+
+      <button
+        (click)="onClose()"
+        class="px-8 py-3 rounded-full border border-slate-300 bg-white font-medium hover:bg-slate-50 transition">
+
+        Cancel
+
+      </button>
+
+      <button
+        (click)="onSave()"
+        class="px-8 py-3 rounded-full bg-[#0F3D67] text-white font-medium shadow-lg hover:bg-[#0B3458] transition">
+
+        {{ mode=='add' ? 'Add Class' : 'Update Class' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

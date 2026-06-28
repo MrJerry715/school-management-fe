@@ -1,25 +1,25 @@
-<div class="p-6 bg-slate-100 min-h-screen">
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+<div class="page-stack">
+  <section class="page-hero">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Faculty</p>
-        <h1 class="text-3xl font-semibold text-slate-900">Teachers Dashboard</h1>
-        <p class="mt-2 text-sm text-slate-500">Manage teacher assignments, subjects, and communication details.</p>
+        <p class="eyebrow">Faculty</p>
+        <h1 class="page-title">Teachers Dashboard</h1>
+        <p class="muted-copy mt-2">Manage teacher assignments, subjects, and communication details.</p>
       </div>
-      <button class="rounded-full bg-[#1F4C73] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#163f60] transition">
+      <button class="btn-primary">
         Add Teacher
       </button>
     </div>
 
     <div class="grid gap-4 mt-8 md:grid-cols-4">
-      <div *ngFor="let item of summary" class="rounded-[1.75rem] bg-slate-50 p-6 shadow-sm border border-slate-200">
+      <div *ngFor="let item of summary" class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">{{ item.label }}</p>
         <p class="mt-5 text-3xl font-semibold text-slate-900">{{ item.value }}</p>
       </div>
     </div>
   </section>
 
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200">
+  <section class="surface">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
       <div>
         <h2 class="text-xl font-semibold text-slate-900">Teacher Contacts</h2>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="grid gap-4 md:grid-cols-2">
-      <div *ngFor="let teacher of teacherList" class="rounded-[1.75rem] border border-slate-200 p-5 hover:shadow-sm transition bg-slate-50">
+      <div *ngFor="let teacher of teacherList" class="action-card">
         <p class="text-lg font-semibold text-slate-900">{{ teacher.name }}</p>
         <p class="text-sm text-slate-600 mt-1">{{ teacher.subject }}</p>
         <p class="text-sm text-slate-500 mt-2">{{ teacher.contact }}</p>

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, HostListener, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -17,7 +16,7 @@ import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, MatIconModule, CommonModule, RouterModule, NgIf],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet, MatIconModule, CommonModule, RouterModule],
   templateUrl: './layout.component.html',
 })
 export class LayoutComponent {
@@ -30,7 +29,7 @@ export class LayoutComponent {
   isDesktop = window.innerWidth >= 768;
   headerTitle = 'School Management';
   breadcrumbs: { label: string; url: string }[] = [];
-  userName = this.auth.currentUser?.username ?? 'School User';
+  userName = this.getDisplayName();
 
   logout() {
     this.auth.logout();
@@ -55,7 +54,7 @@ export class LayoutComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    this.isDesktop = window.innerWidth >= 786;
+    this.isDesktop = window.innerWidth >= 768;
     this.sidebarOpen = this.isDesktop;
     this.isMobile = window.innerWidth < 768;
   }
@@ -111,5 +110,13 @@ export class LayoutComponent {
     }
 
     return single.charAt(0).toUpperCase() + single.charAt(single.length - 1).toUpperCase();
+  }
+
+  private getDisplayName(): string {
+    const user = this.auth.currentUser;
+    if (!user) return 'School User';
+
+    const name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    return name || user.username || 'School User';
   }
 }
