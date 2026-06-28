@@ -21,66 +21,31 @@ export const routes: Routes = [
   },
 
   // Admin Routes
-  {
-    path: 'admin',
-    canActivate: [AuthGuard, roleGuard(['admin'])],
-    children: [
-      {
-        path: 'dashboard',
-        loadComponent: () =>
-          import('../pages/admin.component/admin-dashboard.component').then(
-            (m) => m.AdminDashboardComponent
-          ),
-      },
-      {
-        path: 'users',
-        loadComponent: () =>
-          import('../pages/user-management.component/user-management.component').then(
-            (m) => m.UserManagementComponent
-          ),
-      },
-      {
-        path: 'students',
-        loadComponent: () =>
-          import('../pages/students.component/students.component').then(
-            (m) => m.StudentsComponent
-          ),
-      },
-      {
-        path: 'attendance',
-        loadComponent: () =>
-          import('../pages/attendance.component/attendance.component').then(
-            (m) => m.AttendanceComponent
-          ),
-      },
-      {
-        path: 'test-results',
-        loadComponent: () =>
-          import('../pages/test-results.component/test-results.component').then(
-            (m) => m.TestResultsComponent
-          ),
-      },
-      {
-        path: 'fees',
-        loadComponent: () =>
-          import('../pages/fees.component/fees.component').then(
-            (m) => m.FeesComponent
-          ),
-      },
-      {
-        path: 'reports',
-        loadComponent: () =>
-          import('../pages/reports.component/reports.component').then(
-            (m) => m.ReportsComponent
-          ),
-      },
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
-    ],
-  },
+{
+  path: 'admin',
+  component: LayoutComponent,
+  canActivate: [AuthGuard, roleGuard(['admin'])],
+  children: [
+    // {
+    //   path: 'dashboard',
+    //   loadComponent: () =>
+    //     import('../pages/admin.component/admin-dashboard.component')
+    //       .then(m => m.AdminDashboardComponent)
+    // },
+    {
+      path: 'users',
+      loadComponent: () =>
+        import('../pages/user-management.component/user-management.component')
+          .then(m => m.UserManagementComponent)
+    },
+    {
+      path: 'students',
+      loadComponent: () =>
+        import('../pages/students.component/students.component')
+          .then(m => m.StudentsComponent)
+    }
+  ]
+},
 
   // Teacher Routes
   {

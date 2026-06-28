@@ -1,25 +1,25 @@
-<div class="p-6 bg-slate-100 min-h-screen">
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+<div class="page-stack">
+  <section class="page-hero">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Assessments</p>
-        <h1 class="text-3xl font-semibold text-slate-900">Test Results & Examinations</h1>
-        <p class="mt-2 text-sm text-slate-500">Track all test results, scores, and upcoming examinations.</p>
+        <p class="eyebrow">Assessments</p>
+        <h1 class="page-title">Test Results & Examinations</h1>
+        <p class="muted-copy mt-2">Track all test results, scores, and upcoming examinations.</p>
       </div>
-      <button class="rounded-full bg-[#1F4C73] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#163f60] transition">
+      <button class="btn-primary">
         Download Report Card
       </button>
     </div>
 
     <div class="grid gap-4 mt-8 md:grid-cols-4">
-      <div *ngFor="let metric of testMetrics" class="rounded-[1.75rem] bg-slate-50 p-6 shadow-sm border border-slate-200">
+      <div *ngFor="let metric of testMetrics" class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">{{ metric.label }}</p>
         <p class="mt-5 text-3xl font-semibold text-slate-900">{{ metric.value }}</p>
       </div>
     </div>
   </section>
 
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+  <section class="surface">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
       <div>
         <h2 class="text-xl font-semibold text-slate-900">Recent Test Results</h2>
@@ -29,7 +29,7 @@
     </div>
 
     <div class="overflow-x-auto">
-      <table class="min-w-full text-left text-sm text-slate-700">
+      <table class="data-table">
         <thead class="border-b border-slate-200 text-xs uppercase tracking-[0.16em] text-slate-500">
           <tr>
             <th class="px-4 py-3">Test Name</th>
@@ -63,10 +63,10 @@
     </div>
   </section>
 
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200">
+  <section class="surface">
     <h2 class="text-xl font-semibold text-slate-900 mb-4">Upcoming Tests</h2>
     <div class="space-y-3">
-      <div *ngFor="let upcomingTest of upcomingTests" class="rounded-[1.75rem] border border-slate-200 p-4 flex justify-between items-center hover:shadow-sm transition bg-slate-50">
+      <div *ngFor="let upcomingTest of upcomingTests" class="action-card flex justify-between items-center">
         <div>
           <p class="font-semibold text-slate-900">{{ upcomingTest.name }}</p>
           <p class="text-sm text-slate-500">{{ upcomingTest.subject }} • {{ upcomingTest.marks }} Marks</p>

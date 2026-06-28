@@ -1,33 +1,72 @@
-<div class="p-6 bg-slate-100 min-h-screen">
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+<div class="page-stack">
+  <section class="page-hero">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Administration</p>
-        <h1 class="text-3xl font-semibold text-slate-900">User Management</h1>
-        <p class="mt-2 text-sm text-slate-500">Manage roles, permissions, and user assignments.</p>
+        <p class="eyebrow">Administration</p>
+        <h1 class="page-title">User Management Dashboard</h1>
+        <p class="muted-copy mt-2">Click on a category card below to manage records, roles, and assignments.</p>
       </div>
     </div>
   </section>
 
-  <!-- Stats Cards -->
-  <div class="grid gap-4 md:grid-cols-3 mb-8">
-    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
-      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Active Teachers</p>
-      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ activeTeachersCount }}</p>
+  <!-- Interactive Dashboard Cards -->
+  <div class="grid gap-4 md:grid-cols-4">
+    <!-- Roles Box -->
+    <div (click)="activeTab = 0" 
+         [ngClass]="activeTab === 0 ? 'border-blue-500 ring-2 ring-blue-100 bg-blue-50/30' : 'bg-white'"
+         class="action-card cursor-pointer flex items-center gap-4">
+      <div class="p-3 bg-blue-100 text-blue-700 rounded-lg">
+        <mat-icon>gavel</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm uppercase tracking-[0.24em] text-slate-500">System Roles</p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">{{ rolePermissions.length }} Rules</p>
+      </div>
     </div>
-    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
-      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Inactive Teachers</p>
-      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ inactiveTeachersCount }}</p>
+
+    <!-- Teachers Box -->
+    <div (click)="activeTab = 1" 
+         [ngClass]="activeTab === 1 ? 'border-blue-500 ring-2 ring-blue-100 bg-blue-50/30' : 'bg-white'"
+         class="action-card cursor-pointer flex items-center gap-4">
+      <div class="p-3 bg-emerald-100 text-emerald-700 rounded-lg">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Teachers</p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">{{ activeTeachersCount }} Active</p>
+      </div>
     </div>
-    <div class="rounded-[1.75rem] bg-white p-6 shadow-sm border border-slate-200">
-      <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Parent Mappings</p>
-      <p class="mt-5 text-3xl font-semibold text-slate-900">{{ parentChildMappings.length }}</p>
+
+    <!-- Parents Box -->
+    <div (click)="activeTab = 2" 
+         [ngClass]="activeTab === 2 ? 'border-blue-500 ring-2 ring-blue-100 bg-blue-50/30' : 'bg-white'"
+         class="action-card cursor-pointer flex items-center gap-4">
+      <div class="p-3 bg-violet-100 text-violet-700 rounded-lg">
+        <mat-icon>supervisor_account</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Parents</p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">{{ parentChildMappings.length }} Linked</p>
+      </div>
     </div>
+
+    <!-- Students Box: Now Navigates to /students directly upon click -->
+    <a routerLink="/students"
+       class="action-card cursor-pointer flex items-center gap-4 hover:border-amber-500 hover:no-underline decoration-none text-inherit">
+      <div class="p-3 bg-amber-100 text-amber-700 rounded-lg">
+        <mat-icon>school</mat-icon>
+      </div>
+      <div>
+        <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Students</p>
+        <p class="mt-1 text-2xl font-semibold text-slate-900">{{ availableStudents.length }} Added</p>
+      </div>
+    </a>
   </div>
 
-  <!-- Tabs -->
-  <mat-tab-group [(selectedIndex)]="activeTab" class="rounded-[2rem] overflow-hidden">
-    <!-- Role Permissions Tab -->
+  <!-- Content Management Tabs -->
+  <mat-tab-group [(selectedIndex)]="activeTab" class="surface overflow-hidden p-0">
+    
+    <!-- Tab 0: Role Permissions -->
     <mat-tab label="Role Permissions">
       <div class="p-6">
         <h2 class="text-xl font-semibold text-slate-900 mb-6">Role & Permission Settings</h2>
@@ -62,7 +101,7 @@
       </div>
     </mat-tab>
 
-    <!-- Teachers Tab -->
+    <!-- Tab 1: Teachers Tab -->
     <mat-tab label="Teacher Assignments">
       <div class="p-6">
         <div class="flex justify-between items-center mb-6">
@@ -74,54 +113,31 @@
         </div>
 
         <!-- Edit Form -->
-        <div *ngIf="editingTeacher" class="bg-slate-50 p-6 rounded-[1.75rem] border border-slate-200 mb-6">
+        <div *ngIf="editingTeacher" class="bg-slate-50 p-6 rounded-lg border border-slate-200 mb-6">
           <h3 class="text-lg font-semibold mb-4">Edit Teacher Assignment</h3>
           <div class="grid gap-4 md:grid-cols-2">
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Teacher</label>
-              <input
-                type="text"
-                [(ngModel)]="editingTeacher.teacherName"
-                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
-                disabled
-              />
+              <input type="text" [(ngModel)]="editingTeacher.teacherName" class="form-field" disabled />
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Status</label>
-              <select [(ngModel)]="editingTeacher.status" class="w-full px-4 py-2 border border-slate-300 rounded-lg">
+              <select [(ngModel)]="editingTeacher.status" class="form-field">
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Classes</label>
-           <select
-    [(ngModel)]="editingTeacher.classIds"
-    multiple
-    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
-
-    <option
-        *ngFor="let cls of availableClasses"
-        [ngValue]="cls">
-        {{ cls }}
-    </option>
-
-</select>
+              <select [(ngModel)]="editingTeacher.classIds" multiple class="form-field">
+                <option *ngFor="let cls of availableClasses" [ngValue]="cls">{{ cls }}</option>
+              </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Subjects</label>
-             <select
-    [(ngModel)]="editingTeacher.subjects"
-    multiple
-    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
-
-    <option
-        *ngFor="let subj of availableSubjects"
-        [ngValue]="subj">
-        {{ subj }}
-    </option>
-
-</select>
+              <select [(ngModel)]="editingTeacher.subjects" multiple class="form-field">
+                <option *ngFor="let subj of availableSubjects" [ngValue]="subj">{{ subj }}</option>
+              </select>
             </div>
           </div>
           <div class="flex gap-3 mt-4">
@@ -156,9 +172,7 @@
                 <td class="text-slate-600">{{ teacher.email }}</td>
                 <td>
                   <div class="flex gap-2">
-                    <button (click)="editTeacher(teacher)" mat-icon-button title="Edit">
-                      <mat-icon>edit</mat-icon>
-                    </button>
+                    <button (click)="editTeacher(teacher)" mat-icon-button title="Edit"><mat-icon>edit</mat-icon></button>
                     <button (click)="toggleTeacherStatus(teacher)" mat-icon-button title="Toggle Status">
                       <mat-icon>{{ teacher.status === 'active' ? 'block' : 'check_circle' }}</mat-icon>
                     </button>
@@ -171,7 +185,7 @@
       </div>
     </mat-tab>
 
-    <!-- Parents Tab -->
+    <!-- Tab 2: Parents Tab -->
     <mat-tab label="Parent-Child Mapping">
       <div class="p-6">
         <div class="flex justify-between items-center mb-6">
@@ -183,39 +197,22 @@
         </div>
 
         <!-- Edit Form -->
-        <div *ngIf="editingParent" class="bg-slate-50 p-6 rounded-[1.75rem] border border-slate-200 mb-6">
+        <div *ngIf="editingParent" class="bg-slate-50 p-6 rounded-lg border border-slate-200 mb-6">
           <h3 class="text-lg font-semibold mb-4">Edit Parent Mapping</h3>
           <div class="grid gap-4 md:grid-cols-2">
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Parent Name</label>
-              <input
-                type="text"
-                [(ngModel)]="editingParent.parentName"
-                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
-              />
+              <input type="text" [(ngModel)]="editingParent.parentName" class="form-field" />
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-2">Email</label>
-              <input
-                type="email"
-                [(ngModel)]="editingParent.email"
-                class="w-full px-4 py-2 border border-slate-300 rounded-lg"
-              />
+              <input type="email" [(ngModel)]="editingParent.email" class="form-field" />
             </div>
             <div class="md:col-span-2">
               <label class="block text-sm font-medium text-slate-700 mb-2">Assigned Children</label>
-             <select
-    [(ngModel)]="editingParent.childrenIds"
-    multiple
-    class="w-full px-4 py-2 border border-slate-300 rounded-lg">
-
-    <option
-        *ngFor="let student of availableStudents"
-        [ngValue]="student.id">
-        {{ student.name }}
-    </option>
-
-</select>
+              <select [(ngModel)]="editingParent.childrenIds" multiple class="form-field">
+                <option *ngFor="let student of availableStudents" [ngValue]="student.id">{{ student.name }}</option>
+              </select>
             </div>
           </div>
           <div class="flex gap-3 mt-4">
@@ -224,7 +221,6 @@
           </div>
         </div>
 
-        <!-- Parents Table -->
         <div class="overflow-x-auto">
           <table class="permission-table">
             <thead>
@@ -242,12 +238,8 @@
                 <td class="text-slate-600">{{ parent.email }}</td>
                 <td>
                   <div class="flex gap-2">
-                    <button (click)="editParent(parent)" mat-icon-button title="Edit">
-                      <mat-icon>edit</mat-icon>
-                    </button>
-                    <button mat-icon-button title="Delete">
-                      <mat-icon>delete</mat-icon>
-                    </button>
+                    <button (click)="editParent(parent)" mat-icon-button title="Edit"><mat-icon>edit</mat-icon></button>
+                    <button mat-icon-button title="Delete"><mat-icon>delete</mat-icon></button>
                   </div>
                 </td>
               </tr>
@@ -256,5 +248,41 @@
         </div>
       </div>
     </mat-tab>
+
+    <!-- Tab 3: Students Management Tab -->
+    <mat-tab label="All Students">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-xl font-semibold text-slate-900">Registered Students</h2>
+          <a routerLink="/students" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition decoration-none">
+            <mat-icon class="text-base">school</mat-icon>
+            Go to Students Profile
+          </a>
+        </div>
+
+        <!-- Table displaying actual dynamic student entries -->
+        <div class="overflow-x-auto">
+          <table class="permission-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let student of availableStudents">
+                <td class="font-mono text-sm text-slate-500">{{ student.id }}</td>
+                <td class="font-semibold text-slate-900">{{ student.name }}</td>
+                <td>
+                  <span class="status-active">ACTIVE</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </mat-tab>
+
   </mat-tab-group>
 </div>

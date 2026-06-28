@@ -1,44 +1,44 @@
-<div class="p-6 bg-slate-100 min-h-screen">
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200 mb-8">
+<div class="page-stack">
+  <section class="page-hero">
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Student Management</p>
-        <h1 class="mt-3 text-3xl font-semibold text-slate-900">Students Overview</h1>
-        <p class="mt-2 text-sm leading-6 text-slate-500">Track enrollment, admissions, and active student details with quick actions and filters.</p>
+        <p class="eyebrow">Student Management</p>
+        <h1 class="page-title">Students Overview</h1>
+        <p class="muted-copy mt-2">Track enrollment, admissions, and active student details with quick actions and filters.</p>
       </div>
-      <button class="inline-flex items-center justify-center rounded-full bg-[#1F4C73] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#163f60] transition"
+      <button class="btn-primary"
         (click)="openAddStudentDialog()">
         + Add Student
       </button>
     </div>
 
     <div class="grid gap-4 mt-8 sm:grid-cols-2 xl:grid-cols-4">
-      <div class="rounded-[1.75rem] bg-slate-50 p-5 shadow-sm border border-slate-200">
+      <div class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Total Students</p>
         <p class="mt-4 text-3xl font-semibold text-slate-900">{{ overview[0].value }}</p>
       </div>
-      <div class="rounded-[1.75rem] bg-slate-50 p-5 shadow-sm border border-slate-200">
+      <div class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">New Admissions</p>
         <p class="mt-4 text-3xl font-semibold text-slate-900">{{ overview[1].value }}</p>
       </div>
-      <div class="rounded-[1.75rem] bg-slate-50 p-5 shadow-sm border border-slate-200">
+      <div class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Pending Fees</p>
         <p class="mt-4 text-3xl font-semibold text-slate-900">{{ overview[2].value }}</p>
       </div>
-      <div class="rounded-[1.75rem] bg-slate-50 p-5 shadow-sm border border-slate-200">
+      <div class="metric-card">
         <p class="text-sm uppercase tracking-[0.24em] text-slate-500">Scholarship Students</p>
         <p class="mt-4 text-3xl font-semibold text-slate-900">{{ overview[3].value }}</p>
       </div>
     </div>
   </section>
 
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200">
+  <section class="surface">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
         <h2 class="text-xl font-semibold text-slate-900">Student Directory</h2>
         <p class="mt-1 text-sm text-slate-500">Filter by name, class, section, or enrollment status.</p>
       </div>
-      <button class="rounded-full border border-slate-200 bg-slate-50 px-5 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition"
+      <button class="btn-secondary"
         (click)="resetFilters()">
         Reset filters
       </button>
@@ -49,12 +49,12 @@
         <label class="text-sm font-medium text-slate-700">Search</label>
         <input type="text" placeholder="Search name, class, section"
           [(ngModel)]="filterText"
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-[#1F4C73] focus:outline-none" />
+          class="form-field" />
       </div>
       <div class="space-y-2">
         <label class="text-sm font-medium text-slate-700">Class</label>
         <select [(ngModel)]="selectedClass"
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-[#1F4C73] focus:outline-none">
+          class="form-field">
           <option value="">All classes</option>
           <option *ngFor="let className of classes" [value]="className">{{ className }}</option>
         </select>
@@ -62,7 +62,7 @@
       <div class="space-y-2">
         <label class="text-sm font-medium text-slate-700">Section</label>
         <select [(ngModel)]="selectedSection"
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-[#1F4C73] focus:outline-none">
+          class="form-field">
           <option value="">All sections</option>
           <option *ngFor="let section of sections" [value]="section">{{ section }}</option>
         </select>
@@ -70,7 +70,7 @@
       <div class="space-y-2">
         <label class="text-sm font-medium text-slate-700">Status</label>
         <select [(ngModel)]="selectedStatus"
-          class="w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 focus:border-[#1F4C73] focus:outline-none">
+          class="form-field">
           <option value="">All statuses</option>
           <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
         </select>
@@ -97,7 +97,7 @@
     </div>
 
     <div class="overflow-x-auto mt-6">
-      <table class="min-w-full text-left text-sm text-slate-700">
+      <table class="data-table">
         <thead class="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500">
           <tr>
             <th class="px-4 py-3">Name</th>

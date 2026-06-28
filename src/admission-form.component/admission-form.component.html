@@ -1,0 +1,243 @@
+<div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-6">
+
+  <div class="bg-white rounded-[32px] shadow-2xl w-full max-w-6xl max-h-[95vh] overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center px-10 py-8 border-b">
+
+      <div>
+        <h2 class="text-3xl font-bold text-slate-900">
+          Student Admission Form
+        </h2>
+
+        <p class="text-slate-500 mt-2">
+          Enter the student's admission details.
+        </p>
+      </div>
+
+      <button
+        (click)="onClose()"
+        class="w-12 h-12 rounded-full border hover:bg-slate-100">
+
+        ✕
+
+      </button>
+
+    </div>
+
+    <!-- Body -->
+
+    <div class="p-10 space-y-10">
+
+      <!-- Student Information -->
+
+      <div>
+
+        <h3 class="text-xl font-semibold text-slate-800 mb-6">
+          Student Information
+        </h3>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <div>
+            <label class="block mb-2 font-medium">
+              First Name
+            </label>
+
+            <input
+              [(ngModel)]="form.firstName"
+              class="w-full h-14 border rounded-2xl px-5 focus:ring-2 focus:ring-blue-300 outline-none">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Last Name
+            </label>
+
+            <input
+              [(ngModel)]="form.lastName"
+              class="w-full h-14 border rounded-2xl px-5">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Gender
+            </label>
+
+            <select
+              [(ngModel)]="form.gender"
+              class="w-full h-14 border rounded-2xl px-5">
+
+              <option>Male</option>
+              <option>Female</option>
+
+            </select>
+
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Date of Birth
+            </label>
+
+            <input
+              type="date"
+              [(ngModel)]="form.dob"
+              class="w-full h-14 border rounded-2xl px-5">
+
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              B-Form / CNIC
+            </label>
+
+            <input
+              [(ngModel)]="form.cnic"
+              class="w-full h-14 border rounded-2xl px-5">
+
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Blood Group
+            </label>
+
+            <select
+              [(ngModel)]="form.bloodGroup"
+              class="w-full h-14 border rounded-2xl px-5">
+
+              <option>A+</option>
+              <option>A-</option>
+              <option>B+</option>
+              <option>B-</option>
+              <option>AB+</option>
+              <option>AB-</option>
+              <option>O+</option>
+              <option>O-</option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Parent Information -->
+
+      <div>
+
+        <h3 class="text-xl font-semibold mb-6">
+          Parent Information
+        </h3>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Father Name
+            </label>
+
+            <input
+              [(ngModel)]="form.fatherName"
+              class="w-full h-14 border rounded-2xl px-5">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Mother Name
+            </label>
+
+            <input
+              [(ngModel)]="form.motherName"
+              class="w-full h-14 border rounded-2xl px-5">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Father Phone
+            </label>
+
+            <input
+              [(ngModel)]="form.fatherPhone"
+              class="w-full h-14 border rounded-2xl px-5">
+          </div>
+
+          <div>
+            <label class="block mb-2 font-medium">
+              Mother Phone
+            </label>
+
+            <input
+              [(ngModel)]="form.motherPhone"
+              class="w-full h-14 border rounded-2xl px-5">
+          </div>
+
+          <div class="md:col-span-2">
+
+            <label class="block mb-2 font-medium">
+              Email
+            </label>
+
+            <input
+              type="email"
+              [(ngModel)]="form.email"
+              class="w-full h-14 border rounded-2xl px-5">
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Address -->
+
+      <div>
+
+        <h3 class="text-xl font-semibold mb-6">
+          Address
+        </h3>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <div class="md:col-span-2">
+
+            <label class="block mb-2 font-medium">
+              Address
+            </label>
+
+            <textarea
+              rows="3"
+              [(ngModel)]="form.address"
+              class="w-full border rounded-2xl p-5"></textarea>
+
+          </div>
+
+          <div>
+
+            <label class="block mb-2 font-medium">
+              City
+            </label>
+
+            <input
+              [(ngModel)]="form.city"
+              class="w-full h-14 border rounded-2xl px-5">
+
+          </div>
+
+          <div>
+
+            <label class="block mb-2 font-medium">
+              Postal Code
+            </label>
+
+            <input
+              [(ngModel)]="form.postalCode"
+              class="w-full h-14 border rounded-2xl px-5">
+
+          </div>
+
+        </div>
+
+      </div>

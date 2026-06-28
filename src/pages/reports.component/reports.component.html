@@ -1,18 +1,18 @@
-<div class="p-6 bg-slate-100 min-h-screen">
-  <section class="rounded-[2rem] bg-white p-6 shadow-sm border border-slate-200">
+<div class="page-stack">
+  <section class="page-hero">
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>
-        <p class="text-xs uppercase tracking-[0.28em] text-slate-500">Reports</p>
-        <h1 class="text-3xl font-semibold text-slate-900">Reports Center</h1>
-        <p class="mt-2 text-sm text-slate-500">Generate and review key school performance reports.</p>
+        <p class="eyebrow">Reports</p>
+        <h1 class="page-title">Reports Center</h1>
+        <p class="muted-copy mt-2">Generate and review key school performance reports.</p>
       </div>
-      <button class="rounded-full bg-[#1F4C73] px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#163f60] transition">
+      <button class="btn-primary">
         Create Report
       </button>
     </div>
 
     <div class="grid gap-4 mt-8 md:grid-cols-3">
-      <div *ngFor="let report of reports" class="rounded-[1.75rem] bg-slate-50 p-6 shadow-sm border border-slate-200 hover:shadow-md transition">
+      <div *ngFor="let report of reports" class="action-card">
         <h2 class="text-lg font-semibold text-slate-900">{{ report.title }}</h2>
         <p class="text-sm text-slate-500 mt-3">{{ report.description }}</p>
         <button class="mt-6 text-sm text-[#1F4C73] font-medium hover:underline">Open report</button>
